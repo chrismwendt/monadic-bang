@@ -22,7 +22,7 @@ data PreserveErrors = Preserve | Don'tPreserve
 
 data Options = MkOptions {verbosity :: Verbosity, preserveErrors :: PreserveErrors}
 
-parseOptions :: Has (Throw ErrorCall) sig m => Located HsModule -> [CommandLineOption] -> m Options
+parseOptions :: Has (Throw ErrorCall) sig m => Located (HsModule GhcPs) -> [CommandLineOption] -> m Options
 parseOptions mod' cmdLineOpts = do
   (remaining, options) <- runState cmdLineOpts do
     verbosity <- bool Quiet DumpTransformed <$> extractOpts verboseOpts

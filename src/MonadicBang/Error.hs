@@ -19,12 +19,12 @@ type PsErrors = Writer (Messages PsError)
 
 customError :: Error -> PsError
 customError = PsUnknownMessage . \cases
-  ErrBangOutsideOfDo -> DiagnosticMessage
+  ErrBangOutsideOfDo -> UnknownDiagnostic $ DiagnosticMessage
     { diagMessage = mkDecorated [text "Monadic ! outside of a 'do'-block is not allowed"]
     , diagReason = ErrorWithoutFlag
     , diagHints = [SuggestMissingDo]
     }
-  (ErrOutOfScopeVariable name) -> DiagnosticMessage
+  (ErrOutOfScopeVariable name) -> UnknownDiagnostic $ DiagnosticMessage
     { diagMessage = mkDecorated [text "The variable " <> ppr name <> text " cannot be used inside of ! here, since its desugaring would escape its scope"]
     , diagReason = ErrorWithoutFlag
     , diagHints = [UnknownHint $ text "Maybe you meant to open a new 'do'-block after " <> ppr name <> text " has been bound?"]
